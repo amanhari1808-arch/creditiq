@@ -50,7 +50,7 @@ def show_analytics(
     st.markdown(f"""
     <div class='section-card'>
     <p style='color:#10b981;font-size:1.05rem;font-weight:700;margin:0;'>
-    📊 5-Fold Cross Validation Score:
+    📊 5-fold Cross-Validation Score:
     &nbsp; {cv_mean:.2%} &nbsp;±&nbsp; {cv_std:.4f}
     </p>
     <p style='color:#94a3b8;font-size:0.92rem;margin-top:0.4rem;margin-bottom:0;'>
@@ -198,9 +198,9 @@ def show_analytics(
     st.markdown("""
     <div class='section-card'>
     <p style='color:#10b981;font-weight:600;font-size:1rem;'>
-    ✅ Random Forest outperforms both Logistic Regression
-    and Decision Tree across all metrics — confirming it
-    as the optimal model for credit risk prediction.
+    ✅ Random Forest demonstrates superior overall performance
+    compared to Logistic Regression and Decision Tree,
+    making it the most effective model for credit risk prediction.
     </p>
     </div>
     """, unsafe_allow_html=True)

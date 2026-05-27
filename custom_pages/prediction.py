@@ -233,7 +233,7 @@ def show_prediction(
             ))
 
             fig_shap.update_layout(
-                title="🔍 SHAP Feature Impact — What drove this prediction?",
+                title="SHAP Feature Impact — What drove this prediction?",
                 xaxis_title="Impact on Prediction",
                 template="plotly_dark",
                 paper_bgcolor="rgba(0,0,0,0)",
@@ -306,7 +306,7 @@ def show_prediction(
                 ))
 
                 fig_lime.update_layout(
-                    title="🧪 LIME Local Feature Contributions",
+                    title="LIME Local Feature Contributions",
                     xaxis_title="Local Impact on Prediction",
                     template="plotly_dark",
                     paper_bgcolor="rgba(0,0,0,0)",

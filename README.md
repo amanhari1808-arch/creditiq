@@ -33,6 +33,7 @@ prediction accuracy, and financial decision-making.
 |---|---|
 | 🎯 Real-Time Prediction | Instant credit risk prediction with confidence score |
 | 🔍 SHAP Explainability | Visual explanation of every prediction decision |
+| 🧪 LIME Local Explainability | Local feature contribution analysis for individual predictions |
 | 📊 Interactive Dashboard | Live charts and KPI metrics |
 | 🔬 What-If Simulator | Explore how parameter changes affect risk score |
 | 📂 Batch CSV Prediction | Predict risk for multiple applicants at once |
@@ -52,7 +53,7 @@ prediction accuracy, and financial decision-making.
 - **Recall:** 71.19%
 - **F1 Score:** 81.99%
 - **Cross Validation:** 5-Fold CV for reliable evaluation
-- **Explainability:** SHAP (SHapley Additive exPlanations)
+- **Explainability:** SHAP and LIME Explainable AI Techniques
 
 ---
 
