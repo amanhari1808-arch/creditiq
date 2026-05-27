@@ -9,7 +9,8 @@ from datetime import datetime
 def show_prediction(
     data,
     encoders,
-    model
+    model,
+    X_test
 ):
 
     st.subheader(
@@ -178,6 +179,17 @@ def show_prediction(
         # -------------------------------------------------
         st.markdown("<br>", unsafe_allow_html=True)
 
+        st.markdown("""
+        <div class='section-card'>
+        <h3>🔍 SHAP — Global Feature Explanation</h3>
+        <p style='color:#DDE6F2;'>
+        SHAP explains which features had the most impact
+        on this prediction and in which direction —
+        toward High Risk or Low Risk.
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+
         with st.spinner("Generating SHAP explanation..."):
 
             explainer   = shap.TreeExplainer(model)
@@ -237,6 +249,89 @@ def show_prediction(
             🟢 Green = pushes toward Low Risk
             </p>
             """, unsafe_allow_html=True)
+
+        # -------------------------------------------------
+        # LIME EXPLANATION
+        # -------------------------------------------------
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class='section-card'>
+        <h3>🧪 LIME — Local Prediction Explanation</h3>
+        <p style='color:#DDE6F2;'>
+        LIME explains this individual prediction by showing
+        which features pushed the decision toward
+        High Risk or Low Risk locally.
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        with st.spinner("Generating LIME explanation..."):
+
+            try:
+
+                import lime
+                import lime.lime_tabular
+
+                lime_explainer = lime.lime_tabular.LimeTabularExplainer(
+                    training_data=X_test.values,
+                    feature_names=test.columns.tolist(),
+                    class_names=["Low Risk", "High Risk"],
+                    mode="classification"
+                )
+
+                lime_exp = lime_explainer.explain_instance(
+                    data_row=test.values[0],
+                    predict_fn=model.predict_proba,
+                    num_features=10
+                )
+
+                lime_list = lime_exp.as_list()
+
+                lime_df = pd.DataFrame(
+                    lime_list,
+                    columns=["Feature Condition", "Impact"]
+                ).sort_values("Impact", ascending=True)
+
+                lime_colors = [
+                    "#ef4444" if v > 0 else "#10b981"
+                    for v in lime_df["Impact"]
+                ]
+
+                fig_lime = go.Figure(go.Bar(
+                    x=lime_df["Impact"],
+                    y=lime_df["Feature Condition"],
+                    orientation="h",
+                    marker_color=lime_colors
+                ))
+
+                fig_lime.update_layout(
+                    title="🧪 LIME Local Feature Contributions",
+                    xaxis_title="Local Impact on Prediction",
+                    template="plotly_dark",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    height=450
+                )
+
+                st.plotly_chart(
+                    fig_lime,
+                    use_container_width=True
+                )
+
+                st.markdown("""
+                <p style='color:#94a3b8;font-size:0.88rem;'>
+                🔴 Red = pushes toward High Risk &nbsp;|&nbsp;
+                🟢 Green = pushes toward Low Risk &nbsp;|&nbsp;
+                LIME analyses this specific prediction locally.
+                </p>
+                """, unsafe_allow_html=True)
+
+            except Exception as e:
+
+                st.warning(
+                    f"LIME explanation unavailable: {str(e)}"
+                )
 
     # =====================================================
     # WHAT-IF SIMULATOR

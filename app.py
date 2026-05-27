@@ -227,7 +227,8 @@ elif selected == "Prediction":
     show_prediction(
         data,
         encoders,
-        model
+        model,
+        X_test
     )
 
 
